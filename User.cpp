@@ -9,6 +9,6 @@ std::string User::getName() const {
 
 void User::displayInfo() const {
     std::cout << "\n--------------------------" << std::endl;
-    std::cout << "Kullanici Adi: " << name << std::endl;
+    std::cout << "User Name: " << name << std::endl;
     std::cout << "--------------------------" << std::endl;
 }
