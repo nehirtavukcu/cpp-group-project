@@ -1,4 +1,3 @@
-
 #ifndef FILEACL_H
 #define FILEACL_H
 
@@ -18,23 +17,12 @@ public:
 
     std::string getFilename() const;
 
-    void grantPermission(
-        const std::string& username,
-        Permission permission
-    );
+    void grantPermission(const std::string& username, Permission permission);
+    void revokePermission(const std::string& username, Permission permission);
+    void removeUser(const std::string& username); // Yeni eklendi
 
-    void revokePermission(
-        const std::string& username,
-        Permission permission
-    );
-
-    bool hasPermission(
-        const std::string& username,
-        Permission permission
-    ) const;
-
+    bool hasPermission(const std::string& username, Permission permission) const;
     void showPermissions() const;
 };
 
 #endif
-
