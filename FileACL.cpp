@@ -11,28 +11,26 @@ std::string FileACL::getFilename() const {
     return filename;
 }
 
-void FileACL::grantPermission(
-    const std::string& username,
-    Permission permission
-) {
+void FileACL::grantPermission(const std::string& username, Permission permission) {
     permissions[username].insert(permission);
 }
 
-void FileACL::revokePermission(
-    const std::string& username,
-    Permission permission
-) {
+void FileACL::revokePermission(const std::string& username, Permission permission) {
     auto it = permissions.find(username);
 
     if (it != permissions.end()) {
         it->second.erase(permission);
+        if (it->second.empty()) {
+            permissions.erase(it);
+        }
     }
 }
 
-bool FileACL::hasPermission(
-    const std::string& username,
-    Permission permission
-) const {
+void FileACL::removeUser(const std::string& username) {
+    permissions.erase(username);
+}
+
+bool FileACL::hasPermission(const std::string& username, Permission permission) const {
     auto it = permissions.find(username);
 
     if (it == permissions.end()) {
@@ -45,14 +43,16 @@ bool FileACL::hasPermission(
 void FileACL::showPermissions() const {
     std::cout << "\nFile: " << filename << "\n";
 
+    if (permissions.empty()) {
+        std::cout << "  (No permissions assigned)\n";
+        return;
+    }
+
     for (const auto& user : permissions) {
-        std::cout << user.first << ": ";
-
+        std::cout << "  " << user.first << ": ";
         for (Permission permission : user.second) {
-            std::cout << permissionToString(permission)
-                << " ";
+            std::cout << permissionToString(permission) << " ";
         }
-
         std::cout << "\n";
     }
 }
